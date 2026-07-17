@@ -66,6 +66,8 @@ const RegisterForm = () => {
                 bloodGroup: data.bloodGroup,
                 division: data.division,
                 district: data.district,
+                activeStutus: true,
+                role: "donor"
             });
 
             if (error) {

@@ -29,6 +29,16 @@ export const auth = betterAuth({
         type: "string",
         required: false,
       },
+
+      activeStutus: {
+        type: "boolean",
+        required: true,
+      },
+
+      role: {
+        type: "string",
+        required: true,
+      },
     },
   },
 });
