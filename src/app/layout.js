@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "BloodLink — Find & Become a Blood Donor",
   description: "A verified network connecting willing donors to patients who need blood, fast.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {

@@ -1,35 +1,127 @@
+"use client";
+
+import { useState } from "react";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
 import Textarea from "@/components/common/Textarea";
 import Button from "@/components/common/Button";
-import { bloodGroups, districts } from "@/lib/data";
-import { User, Hospital, Calendar, Droplet } from "lucide-react";
+import { bloodGroups, divisions, districts } from "@/lib/data";
+import {
+  User,
+  Hospital,
+  Calendar,
+  Droplet,
+  MapPin,
+} from "lucide-react";
 
 export default function CreateDonationRequestPage() {
+  const [division, setDivision] = useState("");
+  const [district, setDistrict] = useState("");
+
   return (
-    <div className="max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white shadow-lg shadow-gray-100/60 p-6 sm:p-8">
-      <h3 className="font-display text-lg font-semibold text-gray-900 mb-1">Create a donation request</h3>
-      <p className="text-sm text-gray-500 mb-6">Fill in the patient's details so nearby matching donors can be notified.</p>
+    <div className="mx-auto max-w-4xl rounded-3xl border border-gray-200 bg-white p-6 shadow-xl sm:p-8">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900">
+          Create Donation Request
+        </h2>
 
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
-        <div className="grid sm:grid-cols-2 gap-5">
-          <Input label="Patient name" icon={User} placeholder="e.g. Rafiul Islam" />
-          <Select label="Blood group needed" icon={Droplet} options={bloodGroups} placeholder="Select blood group" />
-        </div>
-        <div className="grid sm:grid-cols-2 gap-5">
-          <Input label="Hospital name" icon={Hospital} placeholder="e.g. Dhaka Medical College Hospital" />
-          <Select label="District" options={districts} placeholder="Select district" />
-        </div>
-        <div className="grid sm:grid-cols-2 gap-5">
-          <Input label="Units needed" type="number" min="1" placeholder="e.g. 2" />
-          <Input label="Date needed" icon={Calendar} type="date" />
-        </div>
-        <Select label="Urgency" options={["Critical", "High", "Standard"]} placeholder="Select urgency level" />
-        <Textarea label="Additional notes" placeholder="Any extra context for donors — ward number, contact person, etc." />
+        <p className="mt-2 text-sm text-gray-500">
+          Fill in the patient's information so nearby matching donors can be
+          notified immediately.
+        </p>
+      </div>
 
-        <div className="flex justify-end gap-3 pt-2">
-          <Button variant="secondary" type="button">Save as draft</Button>
-          <Button type="submit">Submit request</Button>
+      <form className="space-y-6">
+        {/* Patient */}
+        <div className="grid gap-5 md:grid-cols-2">
+          <Input
+            label="Patient Name"
+            icon={User}
+            placeholder="e.g. Rafiul Islam"
+          />
+
+          <Select
+            label="Blood Group Needed"
+            icon={Droplet}
+            options={bloodGroups}
+            placeholder="Select Blood Group"
+          />
+        </div>
+
+        {/* Hospital */}
+        <div className="grid gap-5 md:grid-cols-2">
+          <Input
+            label="Hospital Name"
+            icon={Hospital}
+            placeholder="e.g. Dhaka Medical College Hospital"
+          />
+
+          <Input
+            label="Units Needed"
+            type="number"
+            min="1"
+            placeholder="e.g. 2"
+          />
+        </div>
+
+        {/* Location */}
+        <div className="grid gap-5 md:grid-cols-2">
+          <Select
+            label="Division"
+            icon={MapPin}
+            options={divisions}
+            defaultValue={division}
+            onChange={(e) => {
+              setDivision(e.target.value);
+              setDistrict("");
+            }}
+            placeholder="Select Division"
+          />
+
+          <Select
+            label="District"
+            icon={MapPin}
+            options={division ? districts[division] : []}
+            defaultValue={district}
+            onChange={(e) => setDistrict(e.target.value)}
+            disabled={!division}
+            placeholder="Select District"
+          />
+        </div>
+
+        {/* Date & Urgency */}
+        <div className="grid gap-5 md:grid-cols-2">
+          <Input
+            label="Required Date"
+            icon={Calendar}
+            type="date"
+          />
+
+          <Select
+            label="Urgency"
+            options={[
+              "Critical 🔴",
+              "High 🟠",
+              "Standard 🟢",
+            ]}
+            placeholder="Select Urgency"
+          />
+        </div>
+
+        {/* Notes */}
+        <Textarea
+          label="Additional Notes"
+          placeholder="Ward number, contact person, operation time, or any other important information..."
+        />
+
+        <div className="flex flex-col-reverse gap-3 pt-6 sm:flex-row sm:justify-end">
+          <Button variant="secondary" type="button">
+            Save as Draft
+          </Button>
+
+          <Button type="submit">
+            Submit Request
+          </Button>
         </div>
       </form>
     </div>
