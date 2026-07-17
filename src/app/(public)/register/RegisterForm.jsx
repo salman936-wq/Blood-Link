@@ -5,7 +5,7 @@ import Select from "@/components/common/Select";
 import { bloodGroups, divisions, districts } from "@/lib/data";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { authenticator } from "@/lib/api/register";
+import { authenticator } from "@/lib/api/extra/register";
 import { upload } from "@imagekit/next";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";

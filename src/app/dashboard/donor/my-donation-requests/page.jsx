@@ -3,15 +3,18 @@ import Link from "next/link";
 import RequestTable from "@/components/dashboard/RequestTable";
 import EmptyState from "@/components/common/EmptyState";
 import Button from "@/components/common/Button";
-import { myRequests } from "@/lib/data";
+import { getBlodDonetionById } from "@/lib/api/getDatas/getBlodDonetion";
 
-export default function MyDonationRequestsPage() {
+export default async function MyDonationRequestsPage() {
+
+  const myRequests = await getBlodDonetionById();
   const hasRequests = myRequests.length > 0;
+  
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">{myRequests.length} requests you've created</p>
+        <p className="text-sm text-gray-500">{myRequests.length} requests youve created</p>
         <Link href="/dashboard/donor/create-donation-request">
           <Button icon={Plus}>New request</Button>
         </Link>

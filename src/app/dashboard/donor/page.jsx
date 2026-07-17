@@ -3,8 +3,13 @@ import StatCard from "@/components/dashboard/StatCard";
 import ChartCard from "@/components/dashboard/ChartCard";
 import RequestTable from "@/components/dashboard/RequestTable";
 import { dashboardStats, myRequests, activityTimeline, notifications } from "@/lib/data";
+import { getBlodDonetionById } from "@/lib/api/getDatas/getBlodDonetion";
 
-export default function DonorOverviewPage() {
+export default async function DonorOverviewPage() {
+
+    const myRequests = await getBlodDonetionById();
+const lastThreeRequests = myRequests.slice(-3);
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -16,7 +21,7 @@ export default function DonorOverviewPage() {
           <ChartCard />
           <div>
             <h3 className="font-display text-lg font-semibold text-gray-900 mb-4">My recent requests</h3>
-            <RequestTable data={myRequests} />
+            <RequestTable data={lastThreeRequests} />
           </div>
         </div>
 
