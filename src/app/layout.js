@@ -1,5 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ImageKitProvider } from "@imagekit/next";
+  import { ToastContainer } from 'react-toastify';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +26,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light">
       <body className="font-body bg-white text-gray-900 antialiased">
-        {children}
+        <ImageKitProvider
+          publicKey={process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY}
+          urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT}
+        >
+          <ToastContainer />
+          {children}
+        </ImageKitProvider>
       </body>
     </html>
   );
