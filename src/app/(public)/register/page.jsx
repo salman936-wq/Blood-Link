@@ -1,0 +1,108 @@
+import Link from "next/link";
+import { User, Mail, Lock, ImagePlus, Droplet, MapPin } from "lucide-react";
+import Select from "@/components/common/Select";
+import { bloodGroups, districts } from "@/lib/data";
+
+export default function RegisterPage() {
+  return (
+    <section className="min-h-[calc(100vh-80px)] grid lg:grid-cols-2">
+      <div className="flex items-center justify-center p-6 sm:p-12 order-2 lg:order-1">
+        <div className="w-full max-w-md">
+          <h1 className="font-display text-3xl font-bold text-gray-900 mb-2">Create your account</h1>
+          <p className="text-gray-500 mb-8">Join the network — you'll only be contacted for matching requests.</p>
+
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+            <div className="flex items-center gap-4">
+              <div className="h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center shrink-0">
+                <ImagePlus className="h-6 w-6 text-gray-400" />
+              </div>
+              <button type="button" className="btn btn-outline rounded-xl border-gray-300 text-gray-600 btn-sm">
+                Upload avatar
+              </button>
+            </div>
+
+            <label className="form-control w-full">
+              <span className="text-sm font-medium text-gray-700 mb-1.5 block">Full name</span>
+              <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
+                <User className="h-4 w-4 text-gray-400" />
+                <input type="text" placeholder="Your name" className="w-full bg-transparent text-sm focus:outline-none" />
+              </div>
+            </label>
+
+            <label className="form-control w-full">
+              <span className="text-sm font-medium text-gray-700 mb-1.5 block">Email address</span>
+              <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
+                <Mail className="h-4 w-4 text-gray-400" />
+                <input type="email" placeholder="you@example.com" className="w-full bg-transparent text-sm focus:outline-none" />
+              </div>
+            </label>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Select label="Blood group" icon={Droplet} options={bloodGroups} placeholder="Select" />
+              <Select label="District" icon={MapPin} options={districts} placeholder="Select" />
+            </div>
+
+            <label className="form-control w-full">
+              <span className="text-sm font-medium text-gray-700 mb-1.5 block">Upazila</span>
+              <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
+                <MapPin className="h-4 w-4 text-gray-400" />
+                <input type="text" placeholder="e.g. Mirpur" className="w-full bg-transparent text-sm focus:outline-none" />
+              </div>
+            </label>
+
+            <div className="grid grid-cols-2 gap-4">
+              <label className="form-control w-full">
+                <span className="text-sm font-medium text-gray-700 mb-1.5 block">Password</span>
+                <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
+                  <Lock className="h-4 w-4 text-gray-400" />
+                  <input type="password" placeholder="••••••••" className="w-full bg-transparent text-sm focus:outline-none" />
+                </div>
+              </label>
+              <label className="form-control w-full">
+                <span className="text-sm font-medium text-gray-700 mb-1.5 block">Confirm</span>
+                <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
+                  <Lock className="h-4 w-4 text-gray-400" />
+                  <input type="password" placeholder="••••••••" className="w-full bg-transparent text-sm focus:outline-none" />
+                </div>
+              </label>
+            </div>
+
+            <button type="submit" className="btn w-full rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-md h-12">
+              Create account
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-500 mt-8">
+            Already have an account?{" "}
+            <Link href="/login" className="font-semibold text-primary hover:underline">Log in</Link>
+          </p>
+        </div>
+      </div>
+
+      <div className="hidden lg:flex flex-col justify-between bg-gray-900 text-white p-12 relative overflow-hidden order-1 lg:order-2">
+        <svg className="absolute inset-x-0 top-1/3 w-[1000px] max-w-none opacity-10 pointer-events-none" viewBox="0 0 1000 200">
+          <path d="M0 100 L350 100 L400 40 L450 160 L500 100 L1000 100" fill="none" stroke="white" strokeWidth="3" />
+        </svg>
+        <Link href="/" className="flex items-center gap-2 relative">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+            <Droplet className="h-5 w-5" fill="white" strokeWidth={0} />
+          </span>
+          <span className="font-display text-xl font-bold">Blood<span className="text-red-400">Link</span></span>
+        </Link>
+        <div className="relative">
+          <h2 className="font-display text-4xl font-bold leading-tight mb-4">
+            Register once. Be findable for years of donations to come.
+          </h2>
+          <p className="text-gray-400 max-w-sm">
+            We only show your profile to verified requesters searching your exact blood group and district.
+          </p>
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=800&auto=format&fit=crop"
+          alt="Donor mid-donation"
+          className="relative rounded-2xl h-56 w-full object-cover shadow-xl"
+        />
+      </div>
+    </section>
+  );
+}
