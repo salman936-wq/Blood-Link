@@ -5,7 +5,7 @@ import { MapPin, Droplet, MessageCircle } from "lucide-react";
 
 export default function SearchDonorsPage() {
   return (
-    <section className="section bg-white">
+    <section className="section bg-white my-10">
       <div className="container-app">
         <SectionTitle eyebrow="Search" title="Find a donor near you" desc="Filter by blood group and district to see eligible, verified donors." />
         <div className="mb-14">

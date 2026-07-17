@@ -3,69 +3,150 @@ import { Mail, Lock, Droplet } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <section className="min-h-[calc(100vh-80px)] grid lg:grid-cols-2">
-      <div className="hidden lg:flex flex-col justify-between bg-gray-900 text-white p-12 relative overflow-hidden">
-        <svg className="absolute inset-x-0 top-1/3 w-[1000px] max-w-none opacity-10 pointer-events-none" viewBox="0 0 1000 200">
-          <path d="M0 100 L350 100 L400 40 L450 160 L500 100 L1000 100" fill="none" stroke="white" strokeWidth="3" />
-        </svg>
-        <Link href="/" className="flex items-center gap-2 relative">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
-            <Droplet className="h-5 w-5" fill="white" strokeWidth={0} />
+    <section className="min-h-[calc(100vh-80px)] grid lg:grid-cols-2 mb-16 mt-6 md:mt-0 md:mb-32">
+      {/* Left Side */}
+      <div className="relative hidden lg:flex flex-col bg-gray-900 text-white p-12 overflow-hidden">
+        {/* Background Decoration */}
+        <div className="absolute inset-0">
+          <div className="absolute -top-28 -left-28 h-72 w-72 rounded-full bg-primary/20 blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-red-500/10 blur-3xl"></div>
+
+          <svg
+            className="absolute inset-x-0 top-1/3 w-[1200px] max-w-none opacity-10"
+            viewBox="0 0 1000 200"
+          >
+            <path
+              d="M0 100 L350 100 L400 40 L450 160 L500 100 L1000 100"
+              fill="none"
+              stroke="white"
+              strokeWidth="3"
+            />
+          </svg>
+        </div>
+
+        {/* Logo */}
+        <Link href="/" className="relative z-10 flex items-center gap-3">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-lg">
+            <Droplet className="h-6 w-6 text-white" fill="white" strokeWidth={0} />
           </span>
-          <span className="font-display text-xl font-bold">Blood<span className="text-red-400">Link</span></span>
+
+          <span className="text-2xl font-bold">
+            Blood<span className="text-red-400">Link</span>
+          </span>
         </Link>
-        <div className="relative">
-          <h2 className="font-display text-4xl font-bold leading-tight mb-4">
+
+        {/* Text */}
+        <div className="relative z-10 mt-24 max-w-lg">
+          <h1 className="text-5xl font-bold leading-tight">
             Every login brings one more life-saving match closer.
-          </h2>
-          <p className="text-gray-400 max-w-sm">
-            Track your donation history, manage requests and stay ready for the next call.
+          </h1>
+
+          <p className="mt-6 text-lg text-gray-300 leading-relaxed">
+            Track your donation history, manage blood requests and stay
+            connected with your community whenever someone needs help.
           </p>
         </div>
-        <img
-          src="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=800&auto=format&fit=crop"
-          alt="Medical professional preparing a donation kit"
-          className="relative rounded-2xl h-56 w-full object-cover shadow-xl"
-        />
+
+        {/* Image */}
+        <div className="relative z-10 mt-auto">
+          <img
+            src="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1200&auto=format&fit=crop"
+            alt="Blood Donation"
+            className="h-64 w-full rounded-3xl object-cover shadow-2xl ring-1 ring-white/10"
+          />
+        </div>
       </div>
 
-      <div className="flex items-center justify-center p-6 sm:p-12">
-        <div className="w-full max-w-sm">
-          <h1 className="font-display text-3xl font-bold text-gray-900 mb-2">Welcome back</h1>
-          <p className="text-gray-500 mb-8">Log in to your BloodLink account.</p>
+      {/* Right Side */}
+      <div className="flex items-center justify-center bg-base-100 md:p-6 sm:p-10 lg:p-16">
+        <div className="w-full max-w-md rounded-3xl border border-base-200 bg-white md:p-8 md:shadow-2xl">
 
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
-            <label className="form-control w-full">
-              <span className="text-sm font-medium text-gray-700 mb-1.5 block">Email address</span>
-              <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
-                <Mail className="h-4 w-4 text-gray-400" />
-                <input type="email" placeholder="you@example.com" className="w-full bg-transparent text-sm focus:outline-none" />
-              </div>
-            </label>
-            <label className="form-control w-full">
-              <span className="text-sm font-medium text-gray-700 mb-1.5 block">Password</span>
-              <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
-                <Lock className="h-4 w-4 text-gray-400" />
-                <input type="password" placeholder="••••••••" className="w-full bg-transparent text-sm focus:outline-none" />
-              </div>
-            </label>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-gray-600">
-                <input type="checkbox" className="checkbox checkbox-sm rounded [--chkbg:theme(colors.primary)]" />
-                Remember me
+
+          <h2 className="text-3xl font-bold text-base-content">
+            Welcome Back 👋
+          </h2>
+
+          <p className="mt-2 text-sm text-gray-500">
+            Login to continue accessing your BloodLink account.
+          </p>
+
+          <form className="mt-8 space-y-5">
+            {/* Email */}
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Email Address
               </label>
-              <a href="#" className="font-medium text-primary hover:underline">Forgot password?</a>
+
+              <div className="flex h-12 items-center gap-3 rounded-xl border border-base-300 px-4 transition-all focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10">
+                <Mail className="h-5 w-5 text-gray-400" />
+
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  className="w-full bg-transparent outline-none placeholder:text-gray-400"
+                />
+              </div>
             </div>
 
-            <button type="submit" className="btn w-full rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-md h-12">
-              Log in
+            {/* Password */}
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Password
+              </label>
+
+              <div className="flex h-12 items-center gap-3 rounded-xl border border-base-300 px-4 transition-all focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10">
+                <Lock className="h-5 w-5 text-gray-400" />
+
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full bg-transparent outline-none placeholder:text-gray-400"
+                />
+              </div>
+            </div>
+
+            {/* Remember */}
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex cursor-pointer items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-sm checkbox-primary"
+                />
+                <span>Remember me</span>
+              </label>
+
+              <Link
+                href="/forgot-password"
+                className="font-medium text-primary hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Button */}
+            <button
+              type="submit"
+              className="btn h-12 w-full rounded-xl border-0 bg-primary text-white shadow-lg transition-all hover:bg-red-700 hover:shadow-xl"
+            >
+              Login
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-8">
+          <div className="divider my-7 text-sm text-gray-400">OR</div>
+
+          <button className="btn h-12 w-full rounded-xl border border-base-300 bg-white hover:bg-base-100">
+            Continue with Google
+          </button>
+
+          <p className="mt-8 text-center text-sm text-gray-500">
             Don't have an account?{" "}
-            <Link href="/register" className="font-semibold text-primary hover:underline">Register</Link>
+            <Link
+              href="/register"
+              className="font-semibold text-primary hover:underline"
+            >
+              Create Account
+            </Link>
           </p>
         </div>
       </div>

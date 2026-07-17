@@ -4,7 +4,7 @@ import { campaigns } from "@/lib/data";
 
 export default function FundingPage() {
   return (
-    <section className="section bg-white">
+    <section className="section bg-white my-10">
       <div className="container-app">
         <SectionTitle eyebrow="Support the mission" title="Fund a campaign" desc="Your contribution funds mobile donation camps, screening kits and patient support." />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

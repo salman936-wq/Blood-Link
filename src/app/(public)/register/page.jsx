@@ -1,9 +1,16 @@
+"use client"
 import Link from "next/link";
 import { User, Mail, Lock, ImagePlus, Droplet, MapPin } from "lucide-react";
 import Select from "@/components/common/Select";
-import { bloodGroups, districts } from "@/lib/data";
+import { bloodGroups, divisions, districts } from "@/lib/data";
+import { useState } from "react";
 
 export default function RegisterPage() {
+
+  const [bloodGroup, setBloodGroup] = useState("");
+  const [division, setDivision] = useState("");
+  const [district, setDistrict] = useState("");
+
   return (
     <section className="min-h-[calc(100vh-80px)] grid lg:grid-cols-2">
       <div className="flex items-center justify-center p-6 sm:p-12 order-2 lg:order-1">
@@ -11,7 +18,7 @@ export default function RegisterPage() {
           <h1 className="font-display text-3xl font-bold text-gray-900 mb-2">Create your account</h1>
           <p className="text-gray-500 mb-8">Join the network — you'll only be contacted for matching requests.</p>
 
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+          <form className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center shrink-0">
                 <ImagePlus className="h-6 w-6 text-gray-400" />
@@ -37,18 +44,57 @@ export default function RegisterPage() {
               </div>
             </label>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Select label="Blood group" icon={Droplet} options={bloodGroups} placeholder="Select" />
-              <Select label="District" icon={MapPin} options={districts} placeholder="Select" />
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Blood Group
+              </label>
+
+              <div className="grid grid-cols-8 gap-2">
+                {bloodGroups.map((group) => (
+                  <label
+                    key={group}
+                    className={`cursor-pointer rounded-full border flex justify-center py-2 text-sm transition
+          ${bloodGroup === group
+                        ? "bg-primary text-white"
+                        : "border-gray-300 hover:border-primary"
+                      }`}
+                  >
+                    <input
+                      type="radio"
+                      className="hidden"
+                      defaultValue={group}
+                      checked={bloodGroup === group}
+                      onChange={() => setBloodGroup(group)}
+                    />
+                    {group}
+                  </label>
+                ))}
+              </div>
             </div>
 
-            <label className="form-control w-full">
-              <span className="text-sm font-medium text-gray-700 mb-1.5 block">Upazila</span>
-              <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary transition-colors">
-                <MapPin className="h-4 w-4 text-gray-400" />
-                <input type="text" placeholder="e.g. Mirpur" className="w-full bg-transparent text-sm focus:outline-none" />
-              </div>
-            </label>
+            <div className="grid grid-cols-2 gap-4">
+  <Select
+    label="Division"
+    icon={MapPin}
+    options={divisions}
+    placeholder="Select Division"
+    defaultValue={division}
+    onChange={(e) => {
+      setDivision(e.target.value);
+      setDistrict(""); // Division change হলে district reset
+    }}
+  />
+
+  <Select
+    label="District"
+    icon={MapPin}
+    options={division ? districts[division] : []}
+    placeholder="Select District"
+    defaultValue={district}
+    onChange={(e) => setDistrict(e.target.value)}
+    disabled={!division}
+  />
+</div>
 
             <div className="grid grid-cols-2 gap-4">
               <label className="form-control w-full">

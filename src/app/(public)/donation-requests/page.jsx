@@ -5,7 +5,7 @@ import { urgentRequests } from "@/lib/data";
 
 export default function DonationRequestsPage() {
   return (
-    <section className="section bg-white">
+    <section className="section bg-white my-10">
       <div className="container-app">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <SectionTitle
