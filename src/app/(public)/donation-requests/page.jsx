@@ -1,10 +1,19 @@
 import BloodCard from "@/components/public/BloodCard";
 import SectionTitle from "@/components/common/SectionTitle";
-import { Filter } from "lucide-react";
-import { urgentRequests } from "@/lib/data";
+import { getAllPendingBlodRequest } from "@/lib/api/getDatas/getBlodDonetion";
+import FilterBlodRequest from "./FilterBlodRequest";
+import PaginationBlodReq from "./PaginationBlodReq";
 
-export default function DonationRequestsPage() {
+
+export default async function DonationRequestsPage({searchParams}) {
+
+  const params = await searchParams;
+  const queryString = new URLSearchParams(params).toString();
+  const {datas, totalPage} = await getAllPendingBlodRequest(queryString)
+
+
   return (
+    
     <section className="section bg-white my-10">
       <div className="container-app">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
@@ -14,14 +23,16 @@ export default function DonationRequestsPage() {
             desc="Every request here is verified and updated in real time."
             align="left"
           />
-          <button className="btn btn-outline rounded-xl border-gray-300 text-gray-600 gap-2 mb-16 shrink-0">
-            <Filter className="h-4 w-4" /> Filter
-          </button>
+          <FilterBlodRequest paginationPage={params.page}/>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 -mt-10">
-          {urgentRequests.map((r) => <BloodCard key={r.id} request={r} />)}
-        </div>
+        {!datas.length < 1 && <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 -mt-10">
+          {datas.map((r) => <BloodCard key={r._id} request={r} />)}
+        </div>}
+
+        {datas.length < 1 && <div className="flex justify-center items-center p-25 text-6xl bg-primary/10 shadow-2xl rounded-lg">No blod request founded 😊</div> }
+
+        {!datas.length < 1 && <PaginationBlodReq  totalPages={totalPage}/>}
       </div>
     </section>
   );
