@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   AlertTriangle,
 } from "lucide-react";
+import { acceptedRequestForBlod } from "@/lib/api/action/requestblod";
 
 
 const statusStyles = {
@@ -33,7 +34,6 @@ const urgencyStyles = {
 
 // --- Mapper: raw DB document -> shape the UI renders -----------------------
 function mapDataToRequest(data) {
-
   
   const [rawDate, rawTime] = (data.requiredDateTime || "").split("T");
   
@@ -86,7 +86,7 @@ function formatTime(timeStr) {
   return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
 }
 
-export default function BloodRequestClient({ data }) {
+export default function BloodRequestClient({ data, id, name }) {
   const dialogRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
 
@@ -99,7 +99,7 @@ export default function BloodRequestClient({ data }) {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      name: "",
+      name: name,
       phone: "",
       bloodGroup: request.bloodGroup,
       note: "",
@@ -118,11 +118,13 @@ export default function BloodRequestClient({ data }) {
   const onSubmit = async (formData) => {
     // Wire this up to your API route / server action.
     await new Promise((r) => setTimeout(r, 700));
-    console.log("Donation confirmation submitted:", {
-      requestId: request.id,
-      donorId: request.donorId,
-      ...formData,
-    });
+    const status = "Inprogress";
+    const donetionDetails = {donatedBy: id, donatedByPhone: formData.phone, status};
+    const result = await acceptedRequestForBlod(data._id, donetionDetails)
+console.log(result);
+
+
+
     setSubmitted(true);
     reset({ ...formData });
   };
@@ -338,7 +340,7 @@ export default function BloodRequestClient({ data }) {
                       Your name
                     </span>
                   </label>
-                  <label className="input input-bordered rounded-xl flex items-center gap-2">
+                  <label className="input input-bordered rounded-xl flex items-center gap-2 w-full">
                     <User className="w-4 h-4 opacity-40" />
                     <input
                       type="text"
@@ -363,7 +365,7 @@ export default function BloodRequestClient({ data }) {
                       Phone number
                     </span>
                   </label>
-                  <label className="input input-bordered rounded-xl flex items-center gap-2">
+                  <label className="input input-bordered rounded-xl flex items-center gap-2 w-full">
                     <Phone className="w-4 h-4 opacity-40" />
                     <input
                       type="tel"
@@ -391,7 +393,7 @@ export default function BloodRequestClient({ data }) {
                       Blood group
                     </span>
                   </label>
-                  <label className="input input-bordered rounded-xl flex items-center gap-2">
+                  <label className="input input-bordered rounded-xl flex items-center gap-2 w-full">
                     <Droplet className="w-4 h-4 opacity-40" />
                     <input
                       type="text"
@@ -403,15 +405,10 @@ export default function BloodRequestClient({ data }) {
                 </div>
 
                 <div className="form-control">
-                  <label className="label py-1">
-                    <span className="label-text text-xs font-semibold">
-                      Note (optional)
-                    </span>
-                  </label>
                   <textarea
-                    className="textarea textarea-bordered rounded-xl"
+                    className="w-full textarea textarea-bordered rounded-xl"
                     rows={3}
-                    placeholder="Anything you'd like to add..."
+                    placeholder="Anything you'd like to add (optional)..."
                     {...register("note")}
                   />
                 </div>

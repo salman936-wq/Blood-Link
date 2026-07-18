@@ -1,5 +1,6 @@
 import { fetchDataById } from "@/lib/api/core/fetchData";
 import BloodRequestClient from "./BloodRequestClient";
+import { getSessionInServer } from "@/lib/api/core/session";
 
 
 export const metadata = {
@@ -28,12 +29,12 @@ export default async function BloodRequestPage({params}) {
 const {reqId} = await params;
 
   const request = await fetchDataById("/api/donor/blood-request", reqId);
-
+  const {id, name} = await getSessionInServer();
   
 
   return (
     <main className="min-h-screen bg-base-200/50">
-      <BloodRequestClient data={request} />
+      <BloodRequestClient data={request} id={id} name={name}/>
     </main>
   );
 }

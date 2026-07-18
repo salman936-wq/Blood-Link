@@ -21,6 +21,12 @@ export const requestForBlood = async (data) => {
 return postAllDatas("/api/donor/donation-request", data);
 }
 
+
+export const acceptedRequestForBlod = async (id, data) => {
+  const method = "PATCH";
+  return postAllDatas(`/api/dashboard/donor/blood-request/${id}`, data, method);
+}
+
 // export const editRequestBlood = async (path, data, method = "PATCH") => {
 // return postAllDatas(path, data, method);
 // }

@@ -53,11 +53,13 @@ const DonationReqForm = ({ donorId }) => {
         if (!data.district) return toast.error("District is required");
         if (!data.bloodGroup) return toast.error("Blood group is required");
         if (!data.urgency) return toast.error("Urgency is required");
-        const status = "Pending"
-        const finalData = { ...data, status, donorId }
+        const status = "Pending";
+        const donatedBy = "";
+        const donatedByPhone = "";
+        const finalData = { ...data, status, donorId, donatedBy, donatedByPhone}
 
-        const requestingBlood = await requestForBlood()
-        console.log(requestingBlood);
+        const requestingBlood = await requestForBlood(finalData)
+
 
         if (requestingBlood.acknowledged) {
             toast.success("Donation Request Successfully Created")
@@ -84,7 +86,6 @@ toast.error('Feild requist')
                     label="Required Date & Time"
                     icon={Calendar}
                     type="datetime-local"
-                    step={600}
                     {...register("requiredDateTime")}
                 />
             </div>
