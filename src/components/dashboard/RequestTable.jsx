@@ -8,6 +8,10 @@ import {
   XCircle,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
+import { deleteDonetionRequestForBlod, statusUpdaterForBloodRequest } from "@/lib/api/action/requestblod";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function RequestTable({
   data,
@@ -24,9 +28,9 @@ export default function RequestTable({
     { key: "hospitalName", label: "Hospital" },
     ...(showDistrict
       ? [
-          { key: "district", label: "District" },
-          { key: "division", label: "Division" },
-        ]
+        { key: "district", label: "District" },
+        { key: "division", label: "Division" },
+      ]
       : []),
     { key: "unitsNeeded", label: "Units" },
     { key: "requiredDateTime", label: "Required" },
@@ -34,6 +38,34 @@ export default function RequestTable({
     { key: "status", label: "Status" },
     { key: "actions", label: "" },
   ];
+
+  const router = useRouter()
+
+
+  const handleDeleteData = async (id) => {
+      const res = await deleteDonetionRequestForBlod(id);
+  
+      if (res.success) {
+        toast.success("Successfully deleted donetion request")
+        router.push("/dashboard/donor/my-donation-requests")
+      }
+    }
+
+  const handleCancelRequest = async (id) => {
+    const data = {
+  "status": "Cancelled"
+}
+
+
+    const res = await statusUpdaterForBloodRequest(id, data);
+
+    if (res.modifiedCount > 0) {
+      toast.success("Status updated successfully");
+      router.refresh(); // App Router
+    }
+
+
+  }
 
   return (
     <Table
@@ -94,13 +126,12 @@ export default function RequestTable({
           case "urgency":
             return (
               <span
-                className={`badge ${
-                  row.urgency.includes("High")
+                className={`badge ${row.urgency.includes("High")
                     ? "badge-error"
                     : row.urgency.includes("Medium")
-                    ? "badge-warning"
-                    : "badge-success"
-                }`}
+                      ? "badge-warning"
+                      : "badge-success"
+                  }`}
               >
                 {row.urgency}
               </span>
@@ -125,26 +156,26 @@ export default function RequestTable({
                 >
                   {/* View */}
                   <li>
-                    <button onClick={() => onView?.(row)}>
+                    <Link href={`/dashboard/donor/blood-request/${row._id}`}>
                       <Eye size={16} />
                       View Details
-                    </button>
+                    </Link>
                   </li>
 
                   {/* Pending */}
                   {row.status === "Pending" && (
                     <>
                       <li>
-                        <button onClick={() => onEdit?.(row)}>
+                        <Link href={`/dashboard/donor/edit-donation-request/${row._id}`}>
                           <Pencil size={16} />
                           Edit Request
-                        </button>
+                        </Link>
                       </li>
 
                       <li>
                         <button
                           className="text-warning"
-                          onClick={() => onCancel?.(row)}
+                          onClick={() => handleCancelRequest(row._id)}
                         >
                           <XCircle size={16} />
                           Cancel Request
@@ -158,7 +189,7 @@ export default function RequestTable({
                     <li>
                       <button
                         className="text-warning"
-                        onClick={() => onCancel?.(row)}
+                        onClick={() => handleCancelRequest(row._id)}
                       >
                         <XCircle size={16} />
                         Cancel Request
@@ -169,16 +200,16 @@ export default function RequestTable({
                   {/* Completed / Cancelled */}
                   {(row.status === "Completed" ||
                     row.status === "Cancelled") && (
-                    <li>
-                      <button
-                        className="text-error"
-                        onClick={() => onDelete?.(row)}
-                      >
-                        <Trash2 size={16} />
-                        Delete Request
-                      </button>
-                    </li>
-                  )}
+                      <li>
+                        <button
+                          className="text-error"
+                          onClick={() => handleDeleteData(row._id)}
+                        >
+                          <Trash2 size={16} />
+                          Delete Request
+                        </button>
+                      </li>
+                    )}
                 </ul>
               </div>
             );

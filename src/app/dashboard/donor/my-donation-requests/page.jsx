@@ -3,25 +3,33 @@ import Link from "next/link";
 import RequestTable from "@/components/dashboard/RequestTable";
 import EmptyState from "@/components/common/EmptyState";
 import Button from "@/components/common/Button";
-import { getBlodDonetionById } from "@/lib/api/getDatas/getBlodDonetion";
+import { getBlodDonetionByIdWithFilter } from "@/lib/api/getDatas/getBlodDonetion";
+import FilterMyRquest from "./FilterMyRquest";
+import PaginationBlodReq from "./paginationMyrequest";
 
-export default async function MyDonationRequestsPage() {
+export default async function MyDonationRequestsPage({ searchParams }) {
+  const params = await searchParams;
+  const queryString = new URLSearchParams(params).toString();
 
-  const myRequests = await getBlodDonetionById();
-  const hasRequests = myRequests.length > 0;
-  
+  const { datas, totalPage, total } = await getBlodDonetionByIdWithFilter(queryString);
+  const hasRequests = datas.length > 0;
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">{myRequests.length} requests youve created</p>
-        <Link href="/dashboard/donor/create-donation-request">
-          <Button icon={Plus}>New request</Button>
-        </Link>
+        <p className="text-sm text-gray-500">{total} requests youve created</p>
+        <div className="flex items-center gap-4">
+          <FilterMyRquest />
+          <Link href="/dashboard/donor/create-donation-request">
+            <Button icon={Plus}>New request</Button>
+          </Link>
+        </div>
       </div>
 
       {hasRequests ? (
-        <RequestTable data={myRequests} />
+        <>
+          <RequestTable data={datas} />
+          {!totalPage < 1 && <PaginationBlodReq totalPages={totalPage} />} </>
       ) : (
         <EmptyState
           icon="ClipboardList"

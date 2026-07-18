@@ -8,22 +8,7 @@ export const metadata = {
   description: "View urgency, location, and requirements for a blood request.",
 };
 
-// In a real app, fetch this from your DB / API using params or searchParams.
-async function getBloodRequest() {
-  return {
-    id: "req_1",
-    recipientName: "Mahbub Vai",
-    recipientType: "Recipient • Patient",
-    bloodGroup: "A+",
-    hospitalName: "OMG Medical Collage",
-    hospitalArea: "Osmaninagar, Sylhet",
-    fullAddress: "OMG Medical Collage, Sylhet",
-    requiredDate: "2025-12-21",
-    requiredTime: "22:30",
-    message: "Blood needed urgently, please help if you can donate.",
-    status: "pending",
-  };
-}
+
 
 export default async function BloodRequestPage({params}) {
 const {reqId} = await params;

@@ -15,8 +15,14 @@ import {
   Phone,
   CheckCircle2,
   AlertTriangle,
+  Check,
+  Copy,
+  Trash,
 } from "lucide-react";
-import { acceptedRequestForBlod } from "@/lib/api/action/requestblod";
+import { acceptedRequestForBlod, deleteDonetionRequestForBlod } from "@/lib/api/action/requestblod";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
 
 
 const statusStyles = {
@@ -34,10 +40,10 @@ const urgencyStyles = {
 
 // --- Mapper: raw DB document -> shape the UI renders -----------------------
 function mapDataToRequest(data) {
-  
+
   const [rawDate, rawTime] = (data.requiredDateTime || "").split("T");
-  
-  
+
+
 
   const urgencyLabelRaw = (data.urgency || "").trim(); // e.g. "Medium 🟡"
   const urgencyKey = urgencyLabelRaw
@@ -87,10 +93,31 @@ function formatTime(timeStr) {
 }
 
 export default function BloodRequestClient({ data, id, name }) {
+  const router = useRouter();
   const dialogRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
 
   const request = mapDataToRequest(data);
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(data.donatedByPhone);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
+  const handleDeleteData = async (id) => {
+    const res = await deleteDonetionRequestForBlod(id);
+
+    if (res.success) {
+      toast.success("Successfully deleted donetion request")
+      router.push("/dashboard/donor/my-donation-requests")
+    }
+  }
 
   const {
     register,
@@ -113,15 +140,15 @@ export default function BloodRequestClient({ data, id, name }) {
 
   const closeModal = () => {
     dialogRef.current?.close();
+    router.refresh();
   };
 
   const onSubmit = async (formData) => {
     // Wire this up to your API route / server action.
     await new Promise((r) => setTimeout(r, 700));
     const status = "Inprogress";
-    const donetionDetails = {donatedBy: id, donatedByPhone: formData.phone, status};
+    const donetionDetails = { donatedBy: id, donatedByPhone: formData.phone, status };
     const result = await acceptedRequestForBlod(data._id, donetionDetails)
-console.log(result);
 
 
 
@@ -129,9 +156,13 @@ console.log(result);
     reset({ ...formData });
   };
 
+
+
   const status = statusStyles[request.status] || statusStyles.Pending;
   const urgencyClass =
     urgencyStyles[request.urgencyKey] || "badge-ghost";
+
+
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4 py-8 sm:py-10">
@@ -288,15 +319,41 @@ console.log(result);
         </div>
 
         {/* CTA */}
-        <div className="mt-6 sm:mt-8 flex justify-center sm:justify-end">
+
+        {data.donatedByPhone ? <div className="flex flex-col sm:flex-row gap-3 w-full mt-4">
+          <a
+            href={`tel:${data.donatedByPhone}`}
+            className="btn btn-primary flex-1 rounded-full"
+          >
+            <Phone size={18} />
+            Call Now Donor - {data.donatedByPhone}
+          </a>
+
           <button
+            onClick={handleCopy}
+            className="btn btn-outline btn-primary rounded-full"
+          >
+            {copied ? <Check size={18} /> : <Copy size={18} />}
+            {copied ? "Copied" : "Copy Number"}
+          </button>
+        </div> : <div className="mt-6 sm:mt-8 flex justify-center sm:justify-end">
+
+          {data.status == "Canceled" ? <button onClick={() => handleDeleteData(data._id)} className="btn btn-error"><Trash /> Delete the requist</button> : <button
             onClick={openModal}
-            className="btn btn-primary rounded-full px-8 gap-2 w-full sm:w-auto shadow-lg shadow-primary/30"
+            className={`btn rounded-full px-8 gap-2 w-full sm:w-auto shadow-lg ${status.label === "Pending"
+              ? "btn-primary shadow-primary/30 cursor-pointer"
+              : "btn-disabled cursor-not-allowed"
+              }`}
           >
             <Heart className="w-4 h-4 fill-current" />
             Donate Now
-          </button>
-        </div>
+          </button>}
+
+
+        </div>}
+
+
+
       </div>
 
       {/* Donate modal with react-hook-form */}
@@ -433,6 +490,14 @@ console.log(result);
           <button>close</button>
         </form>
       </dialog>
+
+
+
+
+
+
     </div>
+
+
   );
 }
