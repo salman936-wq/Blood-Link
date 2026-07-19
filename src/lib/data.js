@@ -184,7 +184,13 @@ export const activityTimeline = [
 ];
 
 export const campaigns = [
-  { id: 1, title: "Emergency Blood Bank — Dhaka", raised: 420000, goal: 600000, supporters: 812, image: "https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=800&auto=format&fit=crop" },
+  { id: 1, 
+    title: "Emergency Blood Bank — Dhaka", 
+    raised: 420000, 
+    goal: 600000, 
+    supporters: 812, 
+    image: "https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=800&auto=format&fit=crop" },
+    
   { id: 2, title: "Rural Mobile Donation Camps", raised: 185000, goal: 350000, supporters: 340, image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop" },
   { id: 3, title: "Thalassemia Patient Support Fund", raised: 610000, goal: 800000, supporters: 1204, image: "https://images.unsplash.com/photo-1600959907703-125ba1374a12?q=80&w=800&auto=format&fit=crop" },
 ];
