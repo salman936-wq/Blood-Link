@@ -6,13 +6,16 @@ import Button from "@/components/common/Button";
 import { getBlodDonetionByIdWithFilter } from "@/lib/api/getDatas/getBlodDonetion";
 import FilterMyRquest from "./FilterMyRquest";
 import PaginationBlodReq from "./paginationMyrequest";
+import { getSessionInServer } from "@/lib/api/core/session";
 
 export default async function MyDonationRequestsPage({ searchParams }) {
   const params = await searchParams;
   const queryString = new URLSearchParams(params).toString();
+  const {id} = await getSessionInServer();
 
-  const { datas, totalPage, total } = await getBlodDonetionByIdWithFilter(queryString);
+  const { datas, totalPage, total } = await getBlodDonetionByIdWithFilter(queryString, id);
   const hasRequests = datas.length > 0;
+console.log(datas);
 
   return (
     <div className="space-y-6">

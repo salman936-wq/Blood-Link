@@ -4,8 +4,8 @@ import { getSessionInServer } from "../core/session";
 
 const session = await getSessionInServer()
 
-export const getBlodDonetionByIdWithFilter = async (query) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/donor/donation-request/${session?.id}?${query}`);
+export const getBlodDonetionByIdWithFilter = async (query, userId) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/donor/donation-request/${userId}?${query}`);
     return await res.json()
 }
 

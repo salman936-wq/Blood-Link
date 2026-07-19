@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Mail, Lock, ImagePlus, MapPin } from "lucide-react";
+import { User, Mail, Lock, ImagePlus, MapPin, Phone } from "lucide-react";
 import Select from "@/components/common/Select";
 import { bloodGroups, divisions, districts } from "@/lib/data";
 import { useRef, useState } from "react";
@@ -55,7 +55,7 @@ const RegisterForm = () => {
     // password
 
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data) => {  
         try {
             const { data: res, error } = await authClient.signUp.email({
                 name: data.fullName,
@@ -67,7 +67,8 @@ const RegisterForm = () => {
                 division: data.division,
                 district: data.district,
                 activeStutus: true,
-                role: "donor"
+                role: "donor",
+                phone: data.phone
             });
 
             if (error) {
@@ -121,6 +122,15 @@ const RegisterForm = () => {
                 <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary">
                     <Mail className="h-4 w-4 text-gray-400" />
                     <input {...register("email", { required: true })} type="email" placeholder="you@example.com" className="w-full bg-transparent text-sm focus:outline-none" />
+                </div>
+            </label>
+
+
+            <label className="form-control w-full">
+                <span className="text-sm font-medium text-gray-700 mb-1.5 block">Phone number</span>
+                <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3.5 py-3 focus-within:border-primary">
+                    <Phone className="h-4 w-4 text-gray-400" />
+                    <input {...register("phone", { required: true })} type="tel" placeholder="017xxxxxxxx" className="w-full bg-transparent text-sm focus:outline-none" />
                 </div>
             </label>
 

@@ -55,3 +55,10 @@ export const statusUpdaterForBloodRequest = async (id, status) => {
   return await res.json();
 };
 
+
+// Change personal details on profile page "PATCH"
+export const profileUpdateChange = async (id, data) => {
+  const method = "PATCH";
+  return postAllDatas(`/api/profile/${id}`, data, method);
+}
+

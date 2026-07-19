@@ -1,14 +1,9 @@
-import { MapPin, Droplet, Mail, Edit3 } from "lucide-react";
+import { MapPin, Droplet, Mail, Edit3, Phone } from "lucide-react";
 
 export default function ProfileCard({
-  name = "Tanvir Ahmed",
-  bloodGroup = "O+",
-  district = "Dhaka",
-  email = "tanvir@example.com",
-  avatar = "https://i.pravatar.cc/150?img=12",
-  donations = 14,
+  image, name, email, district, bloodGroup,
   isEditing = false,
-  onEdit,
+  onEdit, phone
 }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg shadow-gray-100/60">
@@ -26,7 +21,7 @@ export default function ProfileCard({
 
         {/* Avatar */}
         <img
-          src={avatar}
+          src={image}
           alt={name}
           className="absolute -bottom-10 left-6 h-20 w-20 rounded-2xl border-4 border-white object-cover shadow-lg"
         />
@@ -41,6 +36,11 @@ export default function ProfileCard({
           <span>{email}</span>
         </div>
 
+        <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
+          <Phone className="h-4 w-4" />
+          <span>{phone}</span>
+        </div>
+
         <div className="mt-4 flex flex-wrap gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-primary">
             <Droplet className="h-3.5 w-3.5" />
@@ -53,15 +53,6 @@ export default function ProfileCard({
           </span>
         </div>
 
-        <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-5">
-          <span className="text-sm text-gray-500">
-            Total Donations
-          </span>
-
-          <span className="text-2xl font-bold text-primary">
-            {donations}
-          </span>
-        </div>
       </div>
     </div>
   );

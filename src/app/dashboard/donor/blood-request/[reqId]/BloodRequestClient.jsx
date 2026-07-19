@@ -92,7 +92,7 @@ function formatTime(timeStr) {
   return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
 }
 
-export default function BloodRequestClient({ data, id, name }) {
+export default function BloodRequestClient({ data, id, name, phone }) {
   const router = useRouter();
   const dialogRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
@@ -119,6 +119,7 @@ export default function BloodRequestClient({ data, id, name }) {
     }
   }
 
+
   const {
     register,
     handleSubmit,
@@ -127,7 +128,7 @@ export default function BloodRequestClient({ data, id, name }) {
   } = useForm({
     defaultValues: {
       name: name,
-      phone: "",
+      phone: phone,
       bloodGroup: request.bloodGroup,
       note: "",
     },

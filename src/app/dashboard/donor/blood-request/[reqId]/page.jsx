@@ -14,12 +14,13 @@ export default async function BloodRequestPage({params}) {
 const {reqId} = await params;
 
   const request = await fetchDataById("/api/donor/blood-request", reqId);
-  const {id, name} = await getSessionInServer();
+  const userInfo = await getSessionInServer();
+  console.log(userInfo);
   
 
   return (
     <main className="min-h-screen bg-base-200/50">
-      <BloodRequestClient data={request} id={id} name={name}/>
+      <BloodRequestClient data={request} id={userInfo.id} name={userInfo.name} phone={userInfo.phone}/>
     </main>
   );
 }

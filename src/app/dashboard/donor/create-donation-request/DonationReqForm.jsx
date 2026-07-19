@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { requestForBlood } from "@/lib/api/action/requestblod";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 
@@ -26,6 +27,7 @@ import { toast } from "react-toastify";
 
 const DonationReqForm = ({ donorId }) => {
 
+    const router = useRouter()
     const [division, setDivision] = useState("");
 
     const { register, handleSubmit, setValue, watch } = useForm({
@@ -62,7 +64,8 @@ const DonationReqForm = ({ donorId }) => {
 
 
         if (requestingBlood.acknowledged) {
-            toast.success("Donation Request Successfully Created")
+            toast.success("Donation Request Successfully Created");
+            router.push('/dashboard/donor/my-donation-requests')
         }
         else {
 toast.error('Feild requist')
