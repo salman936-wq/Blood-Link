@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { HeartHandshake, Wallet, X } from "lucide-react";
 import { handlePaymentStripe } from "@/lib/api/stripe/pay";
 
-export default function FundingPage({email}) {
+export default function FundingPage({email, datas}) {
   const [amount, setAmount] = useState("");
 
   const {
@@ -14,42 +14,6 @@ export default function FundingPage({email}) {
     reset,
     formState: { errors },
   } = useForm();
-
-  // Dummy Data
-  const donations = [
-    {
-      _id: 1,
-      name: "Salman Shaikh",
-      image: "https://i.pravatar.cc/100?img=1",
-      amount: 500,
-      transactionId: "TXN-124578",
-      date: "20 Jul 2026",
-    },
-    {
-      _id: 2,
-      name: "Hafsa",
-      image: "https://i.pravatar.cc/100?img=2",
-      amount: 1000,
-      transactionId: "TXN-124579",
-      date: "19 Jul 2026",
-    },
-    {
-      _id: 3,
-      name: "Rakib",
-      image: "https://i.pravatar.cc/100?img=3",
-      amount: 300,
-      transactionId: "TXN-124580",
-      date: "18 Jul 2026",
-    },
-    {
-      _id: 4,
-      name: "Karim",
-      image: "https://i.pravatar.cc/100?img=4",
-      amount: 700,
-      transactionId: "TXN-124581",
-      date: "17 Jul 2026",
-    },
-  ];
 
   const handlePayment = (payAmount) => {
 
@@ -86,60 +50,76 @@ export default function FundingPage({email}) {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-base-300 bg-base-100">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Donor</th>
-              <th>Amount</th>
-              <th>Transaction ID</th>
-              <th>Date</th>
-            </tr>
-          </thead>
+<div className="overflow-x-auto rounded-2xl border border-base-300 bg-base-100 shadow-md">
+  <table className="table table-zebra">
+    <thead className="bg-base-200">
+      <tr>
+        <th className="text-center">#</th>
+        <th>Donor</th>
+        <th className="text-center">Amount</th>
+        <th>Date</th>
+        <th className="text-center">Status</th>
+      </tr>
+    </thead>
 
-          <tbody>
-            {donations.map((item, index) => (
-              <tr key={item._id}>
-                <td>{index + 1}</td>
+    <tbody>
+      {datas.map((item) => (
+        <tr key={item.transactionId}>
+          {/* Serial */}
+          <td className="text-center font-semibold">
+            {item.serialNumber}
+          </td>
 
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div className="avatar">
-                      <div className="w-11 rounded-full">
-                        <img src={item.image} alt={item.name} />
-                      </div>
-                    </div>
+          {/* Donor */}
+          <td>
+            <div className="flex items-center gap-3">
+              <div className="avatar">
+                <div className="w-11 rounded-full">
+                  <img src={item.image} alt={item.name} />
+                </div>
+              </div>
 
-                    <div>
-                      <h3 className="font-semibold">{item.name}</h3>
-                    </div>
-                  </div>
-                </td>
+              <div>
+                <p className="font-semibold">{item.name}</p>
+              </div>
+            </div>
+          </td>
 
-                <td className="font-bold text-success">
-                  ৳ {item.amount}
-                </td>
+          {/* Amount */}
+          <td className="text-center">
+            <span className="badge badge-success badge-lg text-white">
+              ৳ {item.amount}
+            </span>
+          </td>
 
-                <td>{item.transactionId}</td>
+          {/* Date */}
+          <td>
+            <p>
+              {new Date(item.date).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+            </p>
+            <span className="text-xs text-gray-500">
+              {new Date(item.date).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </td>
 
-                <td>{item.date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center mt-8">
-        <div className="join">
-          <button className="join-item btn">Previous</button>
-          <button className="join-item btn btn-active">1</button>
-          <button className="join-item btn">2</button>
-          <button className="join-item btn">3</button>
-          <button className="join-item btn">Next</button>
-        </div>
-      </div>
+          {/* Status */}
+          <td className="text-center">
+            <span className="badge badge-success">
+              ✓ Completed
+            </span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
       {/* Modal */}
       <dialog id="fund_modal" className="modal">
