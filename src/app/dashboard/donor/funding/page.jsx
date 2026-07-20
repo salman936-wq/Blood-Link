@@ -1,21 +1,36 @@
-import { HandCoins } from "lucide-react";
 import Table from "@/components/common/Table";
 import StatusBadge from "@/components/common/StatusBadge";
-import Button from "@/components/common/Button";
-import { myFunding, campaigns } from "@/lib/data";
 import AddFund from "./AddFund";
 import { getSessionInServer } from "@/lib/api/core/session";
+import { getPersonalPaymentHistory } from "@/lib/api/extra/getPaymentInfo";
 
 export default async function DonorFundingPage() {
   const columns = [
-    { key: "id", label: "Reference" },
-    { key: "campaign", label: "Campaign" },
-    { key: "amount", label: "Amount" },
-    { key: "date", label: "Date" },
-    { key: "status", label: "Status" },
-  ];
+  {
+    key: "donor",
+    label: "Donor",
+  },
+  {
+    key: "amount",
+    label: "Amount",
+  },
+  {
+    key: "paymentIntentId",
+    label: "Transaction",
+  },
+  {
+    key: "status",
+    label: "Status",
+  },
+  {
+    key: "createdAt",
+    label: "Date",
+  },
+];
 
   const user = await getSessionInServer()
+  const payments = await getPersonalPaymentHistory(user?.email)
+  
 
   return (
     <div className="space-y-8">
@@ -28,7 +43,8 @@ export default async function DonorFundingPage() {
       <div>
         <Table
           columns={columns}
-          data={myFunding}
+          data={payments}
+          user={user}
           renderCell={(key, row) => key === "status" ? <StatusBadge status={row.status} /> : row[key]}
         />
       </div>
