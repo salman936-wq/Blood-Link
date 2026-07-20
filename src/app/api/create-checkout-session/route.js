@@ -9,6 +9,11 @@ export async function POST(req) {
     const sessionData = {
       mode: "payment",
 
+      metadata: {
+        email,
+        amount: amount.toString(),
+      },
+
       line_items: [
         {
           price_data: {
@@ -22,8 +27,8 @@ export async function POST(req) {
         },
       ],
 
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
+      success_url: `${process.env.PUBLIC_URL}/success`,
+      cancel_url: `${process.env.PUBLIC_URL}/cancel`,
     };
 
     // Email থাকলে শুধু তখনই যোগ হবে
