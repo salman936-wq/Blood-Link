@@ -1,17 +1,21 @@
+"use client";
+
 export default function Table({
   columns = [],
   data = [],
   user,
+  renderCell,
 }) {
   if (!data.length) {
     return (
       <div className="rounded-2xl border border-gray-200 bg-white py-12 text-center">
-        <p className="text-gray-500">No donation history found.</p>
+        <p className="text-gray-500">No data found.</p>
       </div>
     );
   }
 
-  const renderCell = (key, row) => {
+  // Default Renderer
+  const defaultRenderCell = (key, row) => {
     switch (key) {
       case "donor":
         return (
@@ -36,11 +40,9 @@ export default function Table({
 
       case "amount":
         return (
-          <div>
-            <h3 className="text-lg font-bold text-green-600">
-              ৳ {row.amount}
-            </h3>
-          </div>
+          <span className="text-lg font-bold text-green-600">
+            ৳ {row.amount}
+          </span>
         );
 
       case "paymentIntentId":
@@ -97,7 +99,9 @@ export default function Table({
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"
+                  className={`px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 ${
+                    col.className || ""
+                  }`}
                 >
                   {col.label}
                 </th>
@@ -114,9 +118,13 @@ export default function Table({
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className="px-6 py-5 align-middle"
+                    className={`px-6 py-5 align-middle ${
+                      col.className || ""
+                    }`}
                   >
-                    {renderCell(col.key, row)}
+                    {renderCell
+                      ? renderCell(col.key, row)
+                      : defaultRenderCell(col.key, row)}
                   </td>
                 ))}
               </tr>
