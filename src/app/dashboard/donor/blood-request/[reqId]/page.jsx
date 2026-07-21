@@ -15,7 +15,6 @@ const {reqId} = await params;
 
   const request = await fetchDataById("/api/donor/blood-request", reqId);
   const userInfo = await getSessionInServer();
-  console.log(userInfo);
   
 
   return (

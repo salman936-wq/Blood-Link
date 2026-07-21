@@ -11,11 +11,10 @@ import { getSessionInServer } from "@/lib/api/core/session";
 export default async function MyDonationRequestsPage({ searchParams }) {
   const params = await searchParams;
   const queryString = new URLSearchParams(params).toString();
-  const {id} = await getSessionInServer();
+  const {id, role} = await getSessionInServer();
 
   const { datas, totalPage, total } = await getBlodDonetionByIdWithFilter(queryString, id);
   const hasRequests = datas.length > 0;
-console.log(datas);
 
   return (
     <div className="space-y-6">
@@ -31,7 +30,7 @@ console.log(datas);
 
       {hasRequests ? (
         <>
-          <RequestTable data={datas} />
+          <RequestTable userRole={role} data={datas} />
           {!totalPage < 1 && <PaginationBlodReq totalPages={totalPage} />} </>
       ) : (
         <EmptyState

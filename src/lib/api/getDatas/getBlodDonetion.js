@@ -9,6 +9,11 @@ export const getBlodDonetionByIdWithFilter = async (query, userId) => {
     return await res.json()
 }
 
+export const getAdminBlodDonetionWithFilter = async (query) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/donation-request?${query}`);
+    return await res.json()
+}
+
 
 export const getBlodDonetionById = async () => {
     return await fetchDataById("/api/donor/donation-request", session?.id);

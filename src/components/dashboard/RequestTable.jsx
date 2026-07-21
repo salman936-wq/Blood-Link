@@ -7,6 +7,8 @@ import {
   Pencil,
   XCircle,
   Trash2,
+  Clock,
+  Check,
 } from "lucide-react";
 import Link from "next/link";
 import { deleteDonetionRequestForBlod, statusUpdaterForBloodRequest } from "@/lib/api/action/requestblod";
@@ -15,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 export default function RequestTable({
   data,
+  userRole,
   showDistrict = false,
   onView,
   onEdit,
@@ -39,34 +42,70 @@ export default function RequestTable({
     { key: "actions", label: "" },
   ];
 
-  
+
 
   const router = useRouter()
 
 
   const handleDeleteData = async (id) => {
-      const res = await deleteDonetionRequestForBlod(id);
-  
-      if (res.success) {
-        toast.success("Successfully deleted donetion request")
-        router.push("/dashboard/donor/my-donation-requests")
-      }
+    const res = await deleteDonetionRequestForBlod(id);
+
+    if (res.success) {
+      toast.success("Successfully deleted donetion request")
+      router.push("/dashboard/donor/my-donation-requests")
     }
+  }
 
   const handleCancelRequest = async (id) => {
     const data = {
-  "status": "Cancelled"
-}
+      "status": "Cancelled"
 
-
+    }
     const res = await statusUpdaterForBloodRequest(id, data);
 
     if (res.modifiedCount > 0) {
       toast.success("Status updated successfully");
       router.refresh(); // App Router
     }
+  }
 
+  const handleInprogressRequest = async (id) => {
+    const data = {
+      "status": "Inprogress"
 
+    }
+    const res = await statusUpdaterForBloodRequest(id, data);
+
+    if (res.modifiedCount > 0) {
+      toast.success("Status updated successfully");
+      router.refresh(); // App Router
+    }
+  }
+
+  const handleCompletedRequest = async (id) => {
+    const data = {
+      "status": "Completed"
+
+    }
+    const res = await statusUpdaterForBloodRequest(id, data);
+
+    if (res.modifiedCount > 0) {
+      toast.success("Status updated successfully");
+      router.refresh(); // App Router
+    }
+  }
+
+  const handlePendingRequest = async (id) => {
+    const data = {
+      "status": "Pending"
+
+    }
+    const res = await statusUpdaterForBloodRequest(id, data);
+
+    if (res.modifiedCount > 0) {
+      toast.success("Status updated successfully");
+      router.refresh(); // App Router
+    }
   }
 
   return (
@@ -129,10 +168,10 @@ export default function RequestTable({
             return (
               <span
                 className={`badge ${row.urgency.includes("High")
-                    ? "badge-error"
-                    : row.urgency.includes("Medium")
-                      ? "badge-warning"
-                      : "badge-success"
+                  ? "badge-error"
+                  : row.urgency.includes("Medium")
+                    ? "badge-warning"
+                    : "badge-success"
                   }`}
               >
                 {row.urgency}
@@ -158,7 +197,7 @@ export default function RequestTable({
                 >
                   {/* View */}
                   <li>
-                    <Link href={`/dashboard/donor/blood-request/${row._id}`}>
+                    <Link href={`/dashboard/${userRole}/blood-request/${row._id}`}>
                       <Eye size={16} />
                       View Details
                     </Link>
@@ -168,7 +207,7 @@ export default function RequestTable({
                   {row.status === "Pending" && (
                     <>
                       <li>
-                        <Link href={`/dashboard/donor/edit-donation-request/${row._id}`}>
+                        <Link href={`/dashboard/${userRole}/edit-donation-request/${row._id}`}>
                           <Pencil size={16} />
                           Edit Request
                         </Link>
@@ -176,27 +215,83 @@ export default function RequestTable({
 
                       <li>
                         <button
-                          className="text-warning"
+                          className="text-error"
                           onClick={() => handleCancelRequest(row._id)}
                         >
                           <XCircle size={16} />
                           Cancel Request
                         </button>
                       </li>
+
+                      
+
+
+                      <li>
+                        <button
+                          className="text-success/60"
+                          onClick={() => handleInprogressRequest(row._id)}
+                        >
+                          <Clock size={16} />
+                          Inprogress Request
+                        </button>
+                      </li>
+
+                      <li>
+                        <button
+                          className="text-success"
+                          onClick={() => handleCompletedRequest(row._id)}
+                        >
+                          <Check size={16} />
+                          Mark Completed
+                        </button>
+                      </li>
+
+                      <li>
+                        <button
+                          className="text-error"
+                          onClick={() => handleDeleteData(row._id)}
+                        >
+                          <Trash2 size={16} />
+                          Delete Request
+                        </button>
+                      </li>
                     </>
                   )}
 
                   {/* In Progress */}
-                  {row.status === "In Progress" && (
+                  {row.status === "Inprogress" && (
+                    <>
                     <li>
                       <button
-                        className="text-warning"
+                        className="text-error"
                         onClick={() => handleCancelRequest(row._id)}
                       >
                         <XCircle size={16} />
                         Cancel Request
                       </button>
                     </li>
+
+                    <li>
+                        <button
+                          className="text-warning"
+                          onClick={() => handlePendingRequest(row._id)}
+                        >
+                          <Clock size={16} />
+                          Pending Request
+                        </button>
+                      </li>
+                      
+                      <li>
+                        <button
+                          className="text-error"
+                          onClick={() => handleDeleteData(row._id)}
+                        >
+                          <Trash2 size={16} />
+                          Delete Request
+                        </button>
+                      </li>
+                       </>
+
                   )}
 
                   {/* Completed / Cancelled */}
