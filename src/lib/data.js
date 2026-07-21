@@ -83,8 +83,9 @@ export const adminMenus = [
     { label: "Overview", href: "/dashboard/admin", icon: "LayoutDashboard" },
     { label: "All Users", href: "/dashboard/admin/all-users", icon: "Users" },
     { label: "All Requests", href: "/dashboard/admin/all-blood-donation-request", icon: "Database" },
-    { label: "Content Management", href: "/dashboard/admin/content-management", icon: "FileText" },
-    { label: "Funding", href: "/dashboard/admin/funding", icon: "HandCoins" },
+    { label: "Create Request", href: "/dashboard/admin/create-donation-request", icon: "PlusCircle" },
+    { label: "My Requests", href: "/dashboard/admin/my-donation-requests", icon: "ClipboardList" },
+    { label: "Profile", href: "/dashboard/admin/profile", icon: "UserCircle" },
   ]},
 ];
 
