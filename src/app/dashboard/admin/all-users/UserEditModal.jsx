@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 
 
 
-export default function UserEditModal({ user, isOpen, onClose, onUpdated }) {
+export default function UserEditModal({user, isOpen, onClose, onUpdated }) {
 
 
     const { register, handleSubmit, watch, reset, setValue } = useForm();
