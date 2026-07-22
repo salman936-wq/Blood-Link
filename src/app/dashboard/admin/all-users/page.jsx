@@ -1,28 +1,47 @@
-import { Search, Filter, UserPlus } from "lucide-react";
-import UserCard from "@/components/dashboard/UserCard";
-import { allUsers } from "@/lib/data";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
-export default function AllUsersPage() {
+import EmptyState from "@/components/common/EmptyState";
+import Button from "@/components/common/Button";
+import { getAdminUsersWithFilter } from "@/lib/api/getDatas/getBlodDonetion";
+import PaginationBlodReq from "./paginationMyrequest";
+import { getSessionInServer } from "@/lib/api/core/session";
+import FilterMyRequest from "./FilterMyRquest";
+import UsersTable from "./UsersTable";
+
+export default async function MyDonationRequestsPage({ searchParams }) {
+  const params = await searchParams;
+  const queryString = new URLSearchParams(params).toString();
+  const {id, role} = await getSessionInServer();
+
+  const { datas, totalPage, total } = await getAdminUsersWithFilter(queryString);
+  const hasRequests = datas.length > 0;
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 w-full sm:w-80">
-          <Search className="h-4 w-4 text-gray-400" />
-          <input placeholder="Search users..." className="w-full bg-transparent text-sm focus:outline-none" />
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="btn btn-outline rounded-xl border-gray-300 text-gray-600 gap-2">
-            <Filter className="h-4 w-4" /> Filter
-          </button>
-          <button className="btn rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-md gap-2">
-            <UserPlus className="h-4 w-4" /> Add user
-          </button>
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-gray-500">{total} requests youve created</p>
+        <div className="flex items-center gap-4">
+          <FilterMyRequest />
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {allUsers.map((u) => <UserCard key={u.id} user={u} />)}
-      </div>
+      {hasRequests ? (
+        <>
+          <UsersTable userRole={role} users={datas} />
+          {!totalPage < 1 && <PaginationBlodReq totalPages={totalPage} />} </>
+      ) : (
+        <EmptyState
+          icon="ClipboardList"
+          title="No requests yet"
+          desc="When you create a donation request, it will show up here so you can track its status."
+          action={
+            <Link href={`/dashboard/${role}/create-donation-request`}>
+              <Button icon={Plus}>Create your first request</Button>
+            </Link>
+          }
+        />
+      )}
     </div>
   );
 }

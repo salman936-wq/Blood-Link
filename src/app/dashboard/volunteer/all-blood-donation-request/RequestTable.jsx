@@ -1,5 +1,5 @@
 "use client"
-import Table from "@/components/common/Table";
+
 import StatusBadge from "@/components/common/StatusBadge";
 import {
   EllipsisVertical,
@@ -14,6 +14,7 @@ import Link from "next/link";
 import { deleteDonetionRequestForBlod, statusUpdaterForBloodRequest } from "@/lib/api/action/requestblod";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Table from "./Table";
 
 export default function RequestTable({
   data,
@@ -223,6 +224,28 @@ export default function RequestTable({
                         </button>
                       </li>
 
+                      
+
+
+                      <li>
+                        <button
+                          className="text-success/60"
+                          onClick={() => handleInprogressRequest(row._id)}
+                        >
+                          <Clock size={16} />
+                          Inprogress Request
+                        </button>
+                      </li>
+
+                      <li>
+                        <button
+                          className="text-success"
+                          onClick={() => handleCompletedRequest(row._id)}
+                        >
+                          <Check size={16} />
+                          Mark Completed
+                        </button>
+                      </li>
 
                       <li>
                         <button
@@ -238,7 +261,34 @@ export default function RequestTable({
 
                   {/* In Progress */}
                   {row.status === "Inprogress" && (
-                    <>                      
+                    <>
+                    <li>
+                      <button
+                        className="text-error/60"
+                        onClick={() => handleCancelRequest(row._id)}
+                      >
+                        <XCircle size={16} />
+                        Cancel Request
+                      </button>
+                    </li>
+
+                    <li>
+                        <Link href={`/dashboard/${userRole}/edit-donation-request/${row._id}`}>
+                          <Pencil size={16} />
+                          Edit Request
+                        </Link>
+                      </li>
+
+                    <li>
+                        <button
+                          className="text-warning"
+                          onClick={() => handlePendingRequest(row._id)}
+                        >
+                          <Clock size={16} />
+                          Pending Request
+                        </button>
+                      </li>
+                      
                       <li>
                         <button
                           className="text-error"

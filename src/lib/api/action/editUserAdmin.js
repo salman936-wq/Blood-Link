@@ -1,0 +1,13 @@
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+export const updateUserRequest = async (id, data) => {
+  const res = await fetch(`${baseUrl}/api/dashboard/admin/user/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return await res.json();
+};

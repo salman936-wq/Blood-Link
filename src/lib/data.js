@@ -102,9 +102,10 @@ export const donorMenus = [
 export const volunteerMenus = [
   { section: null, items: [
     { label: "Overview", href: "/dashboard/volunteer", icon: "LayoutDashboard" },
-    { label: "Profile", href: "/dashboard/volunteer/profile", icon: "UserCircle" },
     { label: "All Requests", href: "/dashboard/volunteer/all-blood-donation-request", icon: "Database" },
-    { label: "Funding", href: "/dashboard/volunteer/funding", icon: "HandCoins" },
+    { label: "Profile", href: "/dashboard/volunteer/profile", icon: "UserCircle" },
+    { label: "Create Request", href: "/dashboard/volunteer/create-donation-request", icon: "PlusCircle" },
+    { label: "My Requests", href: "/dashboard/volunteer/my-donation-requests", icon: "ClipboardList" },
   ]},
 ];
 

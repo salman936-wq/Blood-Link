@@ -2,7 +2,7 @@ import { MapPin, Clock, Droplet, Building2, User } from "lucide-react";
 import StatusBadge from "@/components/common/StatusBadge";
 import Link from "next/link";
 
-export default function BloodCard({ request }) {
+export default function BloodCard({ request, userRole }) {
   const {
     patientName,
     bloodGroup,
@@ -65,9 +65,11 @@ export default function BloodCard({ request }) {
         </div>
       </div>
 
-      <Link href={`${process.env.PUBLIC_URL}/dashboard/donor/blood-request/${request._id}`} className="btn mt-6 w-full rounded-xl border-none bg-primary text-white hover:bg-red-700">
+{!userRole ? <Link href="/login" className="btn mt-6 w-full rounded-xl border-none bg-primary text-white hover:bg-red-700">
         Respond to Request
-      </Link>
+      </Link> : <Link href={`${process.env.PUBLIC_URL}/dashboard/${userRole}/blood-request/${request._id}`} className="btn mt-6 w-full rounded-xl border-none bg-primary text-white hover:bg-red-700">
+        Respond to Request
+      </Link>}
     </div>
   );
 }
