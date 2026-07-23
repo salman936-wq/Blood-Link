@@ -1,4 +1,4 @@
-import { authHeaderInServer } from "../verifyServer/serverAuthHeader";
+import { authHeaderInClient } from "../verifyServer/clientAuthHeader";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -7,7 +7,7 @@ export const updateBloodRequest = async (id, data) => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      ... await authHeaderInServer()
+      ... await authHeaderInClient()
     },
     body: JSON.stringify(data),
   });

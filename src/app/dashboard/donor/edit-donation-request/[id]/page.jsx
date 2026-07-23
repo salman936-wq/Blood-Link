@@ -1,10 +1,10 @@
 import { getSessionInServer } from "@/lib/api/core/session";
 import DonationReqForm from "./DonationReqForm";
-import { fetchDataById } from "@/lib/api/core/fetchData";
+import { protectedFetchDataById } from "@/lib/api/core/fetchData";
 
 export default async function CreateDonationRequestPage({params}) {
   const {id} = await params;
-  const defaultValueOld = await fetchDataById("/api/donor/blood-request", id);
+  const defaultValueOld = await protectedFetchDataById("/api/donor/blood-request", id);
   
   const user = await getSessionInServer();
   

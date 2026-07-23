@@ -1,10 +1,23 @@
-
-import { authHeaderInServer } from "../verifyServer/serverAuthHeader";
-import { postAllDatas } from "./requestblodClint";
+import { authHeaderInClient } from "../verifyServer/clientAuthHeader";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+export const postAllDatas = async (path, data, method = "POST") => {
+  const res = await fetch(`${baseUrl}${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...(await authHeaderInClient()),
+    },
+    body: JSON.stringify(data),
+  });
 
+  if (!res.ok) {
+    throw new Error("Request failed");
+  }
+
+  return res.json();
+};
 
 // Create a new blood donetion request "POST"
 export const requestForBlood = async (data) => {
@@ -17,10 +30,16 @@ export const acceptedRequestForBlod = async (id, data) => {
   return postAllDatas(`/api/dashboard/donor/blood-request/${id}`, data, method);
 }
 
+// Change personal details on profile page "PATCH"
+export const profileUpdateChange = async (id, data) => {
+  const method = "PATCH";
+  return postAllDatas(`/api/profile/${id}`, data, method);
+}
+
 // Delete donetion request by id
 export const deleteDonetionRequestForBlod = async (id) => {
   const res = await fetch(`${baseUrl}/api/dashboard/donor/blood-request/${id}`, {
-    headers: await authHeaderInServer(),
+    headers: await authHeaderInClient(),
     method: "DELETE",
   });
     
@@ -29,7 +48,6 @@ export const deleteDonetionRequestForBlod = async (id) => {
   return data
 }
 
-
 // Status updater
 export const statusUpdaterForBloodRequest = async (id, status) => {
   const res = await fetch(`${baseUrl}/api/dashboard/donor/status-request/${id}`,
@@ -37,7 +55,7 @@ export const statusUpdaterForBloodRequest = async (id, status) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        ... await authHeaderInServer()
+        ... await authHeaderInClient()
       },
       body: JSON.stringify(status),
     }
@@ -45,11 +63,3 @@ export const statusUpdaterForBloodRequest = async (id, status) => {
 
   return await res.json();
 };
-
-
-// Change personal details on profile page "PATCH"
-export const profileUpdateChange = async (id, data) => {
-  const method = "PATCH";
-  return postAllDatas(`/api/profile/${id}`, data, method);
-}
-

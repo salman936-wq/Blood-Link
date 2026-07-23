@@ -1,4 +1,4 @@
-import { fetchDataById } from "@/lib/api/core/fetchData";
+import { protectedFetchDataById } from "@/lib/api/core/fetchData";
 import BloodRequestClient from "./BloodRequestClient";
 import { getSessionInServer } from "@/lib/api/core/session";
 
@@ -13,8 +13,8 @@ export const metadata = {
 export default async function BloodRequestPage({params}) {
 const {reqId} = await params;
 
-  const request = await fetchDataById("/api/donor/blood-request", reqId);
-  const userInfo = await getSessionInServer();
+const userInfo = await getSessionInServer();
+  const request = await protectedFetchDataById("/api/donor/blood-request", reqId);
   
 
   return (
