@@ -1,24 +1,10 @@
-import { authHeaderInClient } from "../verifyServer/clientAuthHeader";
+
+import { authHeaderInServer } from "../verifyServer/serverAuthHeader";
+import { postAllDatas } from "./requestblodClint";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export const postAllDatas = async (path, data, method = "POST") => {
 
-  const res = await fetch(`${baseUrl}${path}`, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      ... await authHeaderInClient()
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) {
-    throw new Error("Request failed");
-  }
-
-  return await res.json();
-};
 
 // Create a new blood donetion request "POST"
 export const requestForBlood = async (data) => {
@@ -34,6 +20,7 @@ export const acceptedRequestForBlod = async (id, data) => {
 // Delete donetion request by id
 export const deleteDonetionRequestForBlod = async (id) => {
   const res = await fetch(`${baseUrl}/api/dashboard/donor/blood-request/${id}`, {
+    headers: await authHeaderInServer(),
     method: "DELETE",
   });
     
@@ -50,6 +37,7 @@ export const statusUpdaterForBloodRequest = async (id, status) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        ... await authHeaderInServer()
       },
       body: JSON.stringify(status),
     }
