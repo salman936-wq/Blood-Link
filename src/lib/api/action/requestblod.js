@@ -1,3 +1,5 @@
+import { authHeaderInClient } from "../verifyServer/clientAuthHeader";
+
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const postAllDatas = async (path, data, method = "POST") => {
@@ -6,6 +8,7 @@ export const postAllDatas = async (path, data, method = "POST") => {
     method,
     headers: {
       "Content-Type": "application/json",
+      ... await authHeaderInClient()
     },
     body: JSON.stringify(data),
   });

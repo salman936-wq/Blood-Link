@@ -1,5 +1,6 @@
 "use client";
 
+
 export default function Table({
   columns = [],
   data = [],
@@ -89,6 +90,9 @@ export default function Table({
         return row[key];
     }
   };
+
+
+  
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">

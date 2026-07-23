@@ -1,4 +1,4 @@
-import { authHeader } from "./authHeader";
+
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -9,7 +9,6 @@ export const updateUserRequest = async (id, data) => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      ... await authHeader()
     },
     body: JSON.stringify(data),
   });

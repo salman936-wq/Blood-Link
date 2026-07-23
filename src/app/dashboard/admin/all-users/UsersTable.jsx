@@ -103,6 +103,8 @@ export default function UsersTable({ users, onDeleteUser, onUserUpdated }) {
     setSelectedUser(null);
   };
 
+  
+
   return (
     <div className="w-full">
       <div className="rounded-2xl border border-base-300 bg-base-100 shadow-sm overflow-hidden">
