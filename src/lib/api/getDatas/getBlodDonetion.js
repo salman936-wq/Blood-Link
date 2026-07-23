@@ -1,4 +1,4 @@
-
+import { authHeader } from "../action/authHeader";
 import { fetchData, fetchDataById } from "../core/fetchData";
 import { getSessionInServer } from "../core/session";
 
@@ -6,13 +6,17 @@ const session = await getSessionInServer()
 
 // Admin and Volentare - get all request for blod
 export const getAdminBlodDonetionWithFilter = async (query) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/donation-request?${query}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/donation-request?${query}`, {
+        headers: await authHeader()
+    });
     return await res.json()
 }
 
 // Admin - get all user for handle
 export const getAdminUsersWithFilter = async (query) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/user-request?${query}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/user-request?${query}`, {
+        headers: await authHeader()
+    });
     return await res.json()
 }
 

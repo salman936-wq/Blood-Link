@@ -1,16 +1,9 @@
-import { getUserToken } from "../core/clintSession";
-
+import { authHeader } from "./authHeader";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export const authHeader = async () => {
-  const token = await getUserToken();
-  const header = token ? {
-    authorization: `Bearer ${token}`
-  } : {};
-  return header;
-}
 
+// Update user (PUT) request for user
 export const updateUserRequest = async (id, data) => {
   const res = await fetch(`${baseUrl}/api/dashboard/admin/user/${id}`, {
     method: "PUT",
