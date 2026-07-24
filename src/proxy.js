@@ -10,6 +10,16 @@ export async function proxy(request) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  // User blocked/inactive হলে
+  if (user.activeStutus === false) {
+    // যেন /blocked page-এ redirect loop না হয়
+    if (!pathname.startsWith("/blocked")) {
+      return NextResponse.redirect(new URL("/blocked", request.url));
+    }
+
+    return NextResponse.next();
+  }
+
   const roleRoutes = {
     admin: "/dashboard/admin",
     donor: "/dashboard/donor",

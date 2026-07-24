@@ -1,9 +1,12 @@
 "use client";
 import { Menu, Bell, Search } from "lucide-react";
 import { getRoleTitle } from "@/lib/data";
+import { authClient } from "@/lib/auth-client";
 
 // Single Header component. Title changes based on `role`.
 export default function DashboardHeader({ role = "donor", subtitle, onMenuClick }) {
+    const { data: session, isPending } = authClient.useSession();
+
   return (
     <header className="sticky top-0 z-30 bg-white/95 glass border-b border-gray-200">
       <div className="flex items-center justify-between h-20 px-6">
@@ -12,18 +15,16 @@ export default function DashboardHeader({ role = "donor", subtitle, onMenuClick 
             <Menu className="h-5 w-5" />
           </button>
           <div>
-            <h1 className="font-display text-xl font-bold text-gray-900">{getRoleTitle(role)}</h1>
-            {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
+            {!isPending && session?.user && <h1 className="font-display text-xl font-bold text-gray-900">Welcome Back {session?.user?.name}</h1>}
           </div>
         </div>
-
-        <div className="flex items-center gap-3">
-          <button className="relative p-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-600">
-            <Bell className="h-[18px] w-[18px]" />
-            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary" />
-          </button>
-          <img src="https://i.pravatar.cc/80?img=12" alt="User avatar" className="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" />
+{!isPending && session?.user && 
+<div className="flex items-center gap-3">
+          <img className="w-15 h-fit rounded-full" src={session?.user?.image} />
         </div>
+}
+        
+
       </div>
     </header>
   );
