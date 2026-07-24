@@ -18,10 +18,6 @@ export default function DashboardHeader({ role = "donor", subtitle, onMenuClick 
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 w-64">
-            <Search className="h-4 w-4 text-gray-400" />
-            <input placeholder="Search..." className="w-full bg-transparent text-sm focus:outline-none" />
-          </div>
           <button className="relative p-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-600">
             <Bell className="h-[18px] w-[18px]" />
             <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary" />

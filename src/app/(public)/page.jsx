@@ -8,11 +8,18 @@ import Link from "next/link";
 import * as Icons from "lucide-react";
 import { ArrowRight, Mail } from "lucide-react";
 import { benefits, donationProcess, urgentRequests, featuredDonors, testimonials, faqs } from "@/lib/data";
+import { getSessionInServer } from "@/lib/api/core/session";
+import { getAllPendingBlodRequest } from "@/lib/api/getDatas/getBlodDonetion";
 
-export default function HomePage() {
+export default async function HomePage() {
+
+  const user = await getSessionInServer();
+  const queryString = "";
+  const {datas, totalPage} = await getAllPendingBlodRequest(queryString)
+
   return (
     <>
-      <Hero />
+      <Hero user={user}/>
 
       {/* Why Donate */}
       <section className="section bg-white mb-32">
@@ -75,30 +82,11 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {urgentRequests.slice(0, 4).map((r) => <BloodCard key={r.id} request={r} />)}
+            {datas.slice(0, 4).map((r) => <BloodCard key={r._id} request={r} userRole={user.role}/>)}
           </div>
         </div>
       </section>
 
-      {/* Featured Donors */}
-      <section className="section">
-        <div className="container-app">
-          <SectionTitle eyebrow="Community" title="Featured donors" desc="Donors who've shown up again and again, in their own districts." />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredDonors.map((d) => (
-              <div key={d.id} className="rounded-2xl border border-gray-200 bg-white shadow-lg shadow-gray-100/60 p-6 text-center transition-transform duration-300 hover:-translate-y-1.5">
-                <img src={d.avatar} alt={d.name} className="h-20 w-20 rounded-2xl object-cover mx-auto mb-4 shadow-sm" />
-                <h3 className="font-display font-semibold text-gray-900">{d.name}</h3>
-                <p className="text-xs text-gray-400 mb-3">{d.district}</p>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="inline-flex items-center justify-center h-7 w-7 rounded-lg bg-red-50 text-primary text-xs font-bold">{d.bloodGroup}</span>
-                  <span className="text-xs text-gray-500">{d.donations} donations</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Impact Numbers */}
       <section className="section relative overflow-hidden my-32">

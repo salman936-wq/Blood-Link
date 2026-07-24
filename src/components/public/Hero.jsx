@@ -3,7 +3,9 @@ import { ArrowRight, PlayCircle } from "lucide-react";
 import StatsCard from "./StatsCard";
 import { siteStats } from "@/lib/data";
 
-export default function Hero() {
+export default function Hero({user}) {
+
+
   return (
     <section className="relative overflow-hidden bg-white pt-16 pb-32 sm:pt-24">
       <svg className="absolute inset-x-0 top-0 w-[1400px] max-w-none opacity-[0.06] pointer-events-none" viewBox="0 0 1400 300" aria-hidden="true">
@@ -24,9 +26,11 @@ export default function Hero() {
             Search by blood group and district, or register to be found when it matters most.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-14">
-            <Link href="/register" className="btn rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-lg gap-2 h-14 px-8">
+            {!user ? <Link href="/register" className="btn rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-lg gap-2 h-14 px-8">
               Become a donor <ArrowRight className="h-4 w-4" />
-            </Link>
+            </Link> : <Link href={`/dashboard/${user.role}`} className="btn rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-lg gap-2 h-14 px-8">
+              Dashboard <ArrowRight className="h-4 w-4" />
+            </Link>}
             <Link href="/donation-requests" className="btn btn-outline rounded-xl border-gray-300 hover:border-primary hover:bg-transparent hover:text-primary text-gray-700 gap-2 h-14 px-8">
               <PlayCircle className="h-4 w-4" /> View urgent requests
             </Link>
