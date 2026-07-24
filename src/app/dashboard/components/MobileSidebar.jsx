@@ -1,14 +1,27 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
 import { Droplet, LogOut, X } from "lucide-react";
 import { getMenus } from "@/lib/data";
+import { authClient } from "@/lib/auth-client";
 
 // Mobile drawer variant of Sidebar — same menu data, slide-in presentation.
 export default function MobileSidebar({ role = "donor", open, onClose }) {
   const pathname = usePathname();
   const menus = getMenus(role);
+
+    const router = useRouter()
+  
+    const handleSignout = async () => {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push("/login"); // redirect to login page
+          },
+        },
+      });
+    }
 
   return (
     <div className={`lg:hidden fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}`}>
@@ -59,7 +72,7 @@ export default function MobileSidebar({ role = "donor", open, onClose }) {
         </nav>
 
         <div className="p-4 border-t border-gray-200">
-          <Link href="/login" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-500 hover:bg-red-50 hover:text-primary transition-colors">
+          <Link onClick={() => handleSignout()} href="/login" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-500 hover:bg-red-50 hover:text-primary transition-colors">
             <LogOut className="h-[18px] w-[18px]" />
             Logout
           </Link>

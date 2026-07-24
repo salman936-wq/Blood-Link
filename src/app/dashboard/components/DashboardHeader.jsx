@@ -20,7 +20,7 @@ export default function DashboardHeader({ role = "donor", subtitle, onMenuClick 
         </div>
 {!isPending && session?.user && 
 <div className="flex items-center gap-3">
-          <img className="w-15 h-fit rounded-full" src={session?.user?.image} />
+          <img className="w-12 h-12 rounded-full" src={session?.user?.image} />
         </div>
 }
         
