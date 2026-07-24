@@ -1,8 +1,8 @@
-import Table from "@/components/common/Table";
 import StatusBadge from "@/components/common/StatusBadge";
 import AddFund from "./AddFund";
 import { getSessionInServer } from "@/lib/api/core/session";
 import { getPersonalPaymentHistory } from "@/lib/api/extra/getPaymentInfo";
+import Table from "./Table";
 
 export default async function DonorFundingPage() {
   const columns = [
@@ -45,7 +45,7 @@ export default async function DonorFundingPage() {
           columns={columns}
           data={payments}
           user={user}
-          renderCell={(key, row) => key === "status" ? <StatusBadge status={row.status} /> : row[key]}
+
         />
       </div>
     </div>
