@@ -2,8 +2,6 @@ import { fetchData, protectedFetchDataById } from "../core/fetchData";
 import { getSessionInServer } from "../core/session";
 import { authHeaderInServer } from "../verifyServer/serverAuthHeader";
 
-const session = await getSessionInServer()
-
 // Admin and Volentare - get all request for blod
 export const getAdminBlodDonetionWithFilter = async (query) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/donation-request?${query}`, {
@@ -30,6 +28,7 @@ export const getBlodDonetionByIdWithFilter = async (query, userId) => {
 
 // Donor - get all personal request for blod
 export const getBlodDonetionById = async () => {
+    const session = await getSessionInServer();
     return await protectedFetchDataById("/api/donor/donation-request", session?.id);
 }
 

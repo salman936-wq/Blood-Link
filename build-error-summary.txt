@@ -1,0 +1,19 @@
+Error Summary:
+
+The build failed while collecting page data for /donation-requests.
+
+Cause:
+- A shared helper module (`src/lib/api/getDatas/getBlodDonetion.js`) used `await getSessionInServer()` at module initialization time.
+- `getSessionInServer()` internally calls `headers()` from `next/headers`, which can only be used inside a request scope.
+- During build/static page generation, this top-level request-scoped call ran outside a valid request context, triggering:
+  `headers() was called outside a request scope`.
+
+Fix:
+- Remove the top-level `const session = await getSessionInServer()` from `src/lib/api/getDatas/getBlodDonetion.js`.
+- Move the session fetch into the function that actually needs it:
+  `getBlodDonetionById()`.
+- This ensures `headers()` is only called during a request-scoped function execution, not during module import.
+
+Result:
+- `npm run build` now completes successfully.
+- The `/donation-requests` page builds without the request-scoped `headers()` error.
