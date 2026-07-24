@@ -28,7 +28,7 @@ export default function Hero({user}) {
           <div className="flex flex-col sm:flex-row gap-4 mb-14">
             {!user ? <Link href="/register" className="btn rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-lg gap-2 h-14 px-8">
               Become a donor <ArrowRight className="h-4 w-4" />
-            </Link> : <Link href={`/dashboard/${user.role}`} className="btn rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-lg gap-2 h-14 px-8">
+            </Link> : <Link href={`/dashboard/${user?.role}`} className="btn rounded-xl bg-primary hover:bg-red-700 text-white border-none shadow-lg gap-2 h-14 px-8">
               Dashboard <ArrowRight className="h-4 w-4" />
             </Link>}
             <Link href="/donation-requests" className="btn btn-outline rounded-xl border-gray-300 hover:border-primary hover:bg-transparent hover:text-primary text-gray-700 gap-2 h-14 px-8">

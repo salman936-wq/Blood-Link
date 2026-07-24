@@ -82,7 +82,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {datas.slice(0, 4).map((r) => <BloodCard key={r._id} request={r} userRole={user.role}/>)}
+            {datas.slice(0, 4).map((r) => <BloodCard key={r._id} request={r} userRole={user?.role}/>)}
           </div>
         </div>
       </section>

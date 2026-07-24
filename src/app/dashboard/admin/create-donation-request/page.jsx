@@ -19,7 +19,7 @@ export default async function CreateDonationRequestPage() {
         </p>
       </div>
 
-      <DonationReqForm donorId={user.id} donorRole={user.role}/>
+      <DonationReqForm donorId={user.id} donorRole={user?.role}/>
 
 
     </div>

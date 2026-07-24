@@ -199,7 +199,7 @@ export default function UsersTable({ users, onDeleteUser, onUserUpdated }) {
 
                   {/* Role */}
                   <td>
-                    <RoleBadge role={user.role} />
+                    <RoleBadge role={user?.role} />
                   </td>
 
                   {/* Status */}

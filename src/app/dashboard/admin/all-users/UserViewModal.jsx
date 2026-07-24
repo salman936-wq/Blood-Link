@@ -25,7 +25,7 @@ export default function UserViewModal({ user, isOpen, onClose, onEdit }) {
   if (!isOpen || !user) return null;
 
   const displayName = user.fullName || user.name;
-  const roleConfig = ROLE_CONFIG[user.role] || {
+  const roleConfig = ROLE_CONFIG[user?.role] || {
     badge: "badge-ghost",
     icon: UserRound,
   };
@@ -83,7 +83,7 @@ export default function UserViewModal({ user, isOpen, onClose, onEdit }) {
 
               <span className={`badge ${roleConfig.badge} badge-lg gap-1 capitalize`}>
                 <RoleIcon size={14} />
-                {user.role}
+                {user?.role}
               </span>
 
               <span

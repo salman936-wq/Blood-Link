@@ -42,7 +42,7 @@ export default function UserEditModal({user, isOpen, onClose, onUpdated }) {
                 bloodGroup: user.bloodGroup || "A+",
                 division: user.division || divisions[0],
                 district: user.district || "",
-                role: user.role || "donor",
+                role: user?.role || "donor",
                 activeStutus: Boolean(user.activeStutus),
             });
         }
