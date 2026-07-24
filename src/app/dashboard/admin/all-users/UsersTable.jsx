@@ -15,6 +15,9 @@ import {
 } from "lucide-react";
 import UserViewModal from "./UserViewModal";
 import UserEditModal from "./UserEditModal";
+import { deleteUserFromAdmin } from "@/lib/api/action/adminDeleteUser";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ROLE_CONFIG = {
   admin: { badge: "badge-error", icon: Shield },
@@ -57,13 +60,13 @@ function formatDate(dateStr) {
 export default function UsersTable({ users, onDeleteUser, onUserUpdated }) {
   const [userList, setUserList] = useState(users || []);
   const [selectedUser, setSelectedUser] = useState(null);
+  const router = useRouter()
 
   useEffect(() => {
     setUserList(users || []);
   }, [users]);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const handleView = (user) => {
     setSelectedUser(user);
@@ -91,10 +94,15 @@ export default function UsersTable({ users, onDeleteUser, onUserUpdated }) {
     onUserUpdated?.(updatedUser);
   };
 
-  const confirmDelete = () => {
-    setUserList((prev) => prev.filter((u) => u._id !== deleteTarget._id));
-    onDeleteUser?.(deleteTarget);
-    setDeleteTarget(null);
+  const confirmDelete = async (id) => {
+
+    document.activeElement?.blur();
+    const res = await deleteUserFromAdmin(id)
+
+    if(res.acknowledged){
+      toast.success("User deleted successfully")
+      router.refresh()
+    }
   };
 
   const closeAllModals = () => {
@@ -235,7 +243,7 @@ export default function UsersTable({ users, onDeleteUser, onUserUpdated }) {
                         <li>
                           <button
                             className="text-error"
-                            onClick={() => setDeleteTarget(user)}
+                            onClick={() => confirmDelete(user._id)}
                           >
                             <Trash2 size={16} />
                             Delete User
@@ -279,42 +287,6 @@ export default function UsersTable({ users, onDeleteUser, onUserUpdated }) {
         onUpdated={handleUpdated}
       />
 
-      {/* Delete confirmation */}
-      {deleteTarget && (
-        <div className="modal modal-open">
-          <div className="modal-box max-w-sm">
-            <h3 className="font-bold text-lg text-base-content">
-              Delete user?
-            </h3>
-            <p className="py-3 text-sm text-base-content/70">
-              This will permanently remove{" "}
-              <span className="font-semibold text-base-content">
-                {deleteTarget.fullName || deleteTarget.name}
-              </span>{" "}
-              from the system. This action cannot be undone.
-            </p>
-            <div className="modal-action">
-              <button
-                className="btn btn-ghost"
-                onClick={() => setDeleteTarget(null)}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn btn-error text-white"
-                onClick={confirmDelete}
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete
-              </button>
-            </div>
-          </div>
-          <div
-            className="modal-backdrop bg-black/40"
-            onClick={() => setDeleteTarget(null)}
-          />
-        </div>
-      )}
     </div>
   );
 }

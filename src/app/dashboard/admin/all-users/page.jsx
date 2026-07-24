@@ -21,7 +21,7 @@ export default async function MyDonationRequestsPage({ searchParams }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">{total} requests youve created</p>
+        <p className="text-sm text-gray-500">{total} user created</p>
         <div className="flex items-center gap-4">
           <FilterMyRequest />
         </div>
